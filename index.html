@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Telegram Gifts Market</title>
+    <!-- Подключаем библиотеку Telegram -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: var(--tg-theme-bg-color, #ffffff);
+            --text-color: var(--tg-theme-text-color, #000000);
+            --hint-color: var(--tg-theme-hint-color, #999999);
+            --link-color: var(--tg-theme-link-color, #2481cc);
+            --button-color: var(--tg-theme-button-color, #2481cc);
+            --button-text-color: var(--tg-theme-button-text-color, #ffffff);
+            --secondary-bg-color: var(--tg-theme-secondary-bg-color, #f1f1f1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            display: none; /* Скрыто по умолчанию */
+            flex-direction: column;
+            gap: 12px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .container.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin: 0 0 10px 0;
+        }
+
+        p {
+            text-align: center;
+            color: var(--hint-color);
+            margin: 0 0 20px 0;
+            font-size: 14px;
+        }
+
+        .card {
+            background-color: var(--secondary-bg-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 12px;
+            color: var(--hint-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .card-value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        button {
+            background-color: var(--button-color);
+            color: var(--button-text-color);
+            border: none;
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:active {
+            opacity: 0.8;
+        }
+
+        button.secondary {
+            background-color: var(--secondary-bg-color);
+            color: var(--text-color);
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        input {
+            background-color: var(--secondary-bg-color);
+            color: var(--text-color);
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        input::placeholder {
+            color: var(--hint-color);
+        }
+
+        .back-btn {
+            background: none;
+            color: var(--link-color);
+            padding: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ГЛАВНОЕ МЕНЮ -->
+    <div id="screen-main" class="container active">
+        <div class="logo">🎁</div>
+        <h1>GIFTS MARKET</h1>
+        <p>Добро пожаловать, <span id="user-name">...</span>!</p>
+        
+        <button onclick="showScreen('create-deal')">
+            <tg-emoji emoji-id="5359829906475744831">🤝</tg-emoji> Создать сделку
+        </button>
+        <button onclick="showScreen('profile')" class="secondary">
+            <tg-emoji emoji-id="5208940588606445660">💼</tg-emoji> Профиль
+        </button>
+        <button onclick="sendAction('help')" class="secondary">
+            <tg-emoji emoji-id="5359576670909005905">❓</tg-emoji> Помощь
+        </button>
+    </div>
+
+    <!-- СОЗДАНИЕ СДЕЛКИ -->
+    <div id="screen-create-deal" class="container">
+        <h2>🤝 Создание сделки</h2>
+        <p>Заполните данные для оффера</p>
+        
+        <div class="input-group">
+            <input type="text" id="deal-link" placeholder="Ссылка на NFT (https://t.me/nft/...)">
+            <input type="number" id="deal-amount" placeholder="Сумма в ⭐️">
+            <input type="text" id="deal-counterparty" placeholder="Юзернейм партнера (@username)">
+        </div>
+
+        <button onclick="submitDeal()">Отправить заявку</button>
+        <button class="back-btn" onclick="showScreen('main')">🔙 Назад в меню</button>
+    </div>
+
+    <!-- ПРОФИЛЬ -->
+    <div id="screen-profile" class="container">
+        <h2>💼 Мой Профиль</h2>
+        
+        <div class="card">
+            <div class="card-title">Ваш ID</div>
+            <div class="card-value" id="prof-id">...</div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">Выполнено сделок</div>
+            <div class="card-value" id="prof-deals">0</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Баланс</div>
+            <div class="card-value"><tg-emoji emoji-id="5359772285194503642">⭐️</tg-emoji> <span id="prof-balance">0</span></div>
+        </div>
+
+        <button class="back-btn" onclick="showScreen('main')">🔙 Назад в меню</button>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Развернуть на весь экран
+        
+        // Инициализация данных пользователя
+        const user = tg.initDataUnsafe?.user;
+        if (user) {
+            document.getElementById('user-name').innerText = user.first_name;
+            document.getElementById('prof-id').innerText = user.id;
+        }
+
+        // Функция переключения экранов (SPA)
+        function showScreen(screenId) {
+            document.querySelectorAll('.container').forEach(el => el.classList.remove('active'));
+            document.getElementById(`screen-${screenId}`).classList.add('active');
+            
+            // Если перешли в профиль, запрашиваем данные у бота (опционально)
+            if(screenId === 'profile') {
+                // Тут можно сделать fetch к вашему серверу
+            }
+        }
+
+        // Отправка данных в бота (Создание сделки)
+        function submitDeal() {
+            const link = document.getElementById('deal-link').value;
+            const amount = document.getElementById('deal-amount').value;
+            const counterparty = document.getElementById('deal-counterparty').value;
+
+            if (!link || !amount || !counterparty) {
+                tg.showAlert("Заполните все поля!");
+                return;
+            }
+
+            const data = {
+                action: "create_deal",
+                link: link,
+                amount: amount,
+                counterparty: counterparty
+            };
+
+            // Отправляем JSON в Python-бота
+            tg.sendData(JSON.stringify(data));
+            tg.close(); // Закрываем мини-апп
+        }
+
+        // Простое действие (например, Помощь)
+        function sendAction(actionName) {
+            tg.sendData(JSON.stringify({ action: actionName }));
+            tg.close();
+        }
+    </script>
+</body>
+</html>
