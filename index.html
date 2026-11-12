@@ -14,7 +14,7 @@
             --accent-blue: #2b9fff;
             --accent-purple: #a855f7;
             --accent-green: #22c55e;
-            --nav-bg: rgba(30, 30, 40, 0.6); /* Полупрозрачный фон для стекла */
+            --nav-bg: rgba(25, 25, 35, 0.65);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -28,7 +28,6 @@
             padding-bottom: 90px;
             overflow-x: hidden;
             user-select: none;
-            /* Красивый градиентный фон для эффекта стекла */
             background-image: radial-gradient(circle at 50% 0%, #2a2a35 0%, var(--bg-color) 70%);
         }
 
@@ -250,14 +249,14 @@
             left: 0;
             width: 100%;
             background: var(--nav-bg);
-            backdrop-filter: blur(25px) saturate(180%); /* Усиленное размытие */
+            backdrop-filter: blur(25px) saturate(180%);
             -webkit-backdrop-filter: blur(25px) saturate(180%);
             display: flex;
             justify-content: space-around;
             align-items: center;
             padding: 12px 10px 24px 10px;
             border-top: 1px solid rgba(255,255,255,0.15);
-            border-radius: 24px 24px 0 0; /* Скругленные верхние углы */
+            border-radius: 24px 24px 0 0;
             z-index: 100;
             box-shadow: 0 -4px 30px rgba(0,0,0,0.5);
         }
@@ -303,7 +302,7 @@
             background-position: center;
             flex-shrink: 0;
             margin-left: 8px;
-            border: 2px solid rgba(255,255,255,0.2); /* Обводка для красоты */
+            border: 2px solid rgba(255,255,255,0.2);
         }
 
         /* --- МОДАЛЬНОЕ ОКНО (Детали) --- */
@@ -609,13 +608,14 @@
                 backdrop: 'Blue', backdropRarity: '2.5%', backdropPrice: '1.50 GRAM',
                 floorPrice: '4.20 GRAM'
             },
-            // --- ФАКЕЛ (CHILL FLAME) ---
+            // --- ФАКЕЛ (CHILL FLAME) - теперь видео! ---
             { 
                 id: 'g4', 
                 name: 'Chill Flame', 
                 price: 6.48, 
-                isImg: true,
-                img: 'chill.png',
+                isVideo: true,
+                // Имя файла с анимацией. Если у тебя mp4/webm, укажи его (например, 'chill.webm')
+                videoSrc: 'chill.webm', 
                 bg: 'bg.jpg',
                 model: 'Balinese',
                 modelRarity: '3%',
@@ -633,7 +633,10 @@
                 id: 'g7', 
                 name: 'Lol Pop', 
                 price: 8.89, 
-                isGif: true,
+                isVideo: true,
+                // Имя файла с анимацией Lol Pop
+                videoSrc: 'lolpop.gif',
+                bg: 'bg_lolpop.jpg',
                 model: 'Pineapple',
                 modelRarity: '1.2%',
                 modelPrice: '',
@@ -650,8 +653,9 @@
         function renderStore() {
             const grid = document.getElementById('store-grid');
             grid.innerHTML = storeItems.map(item => {
-                // Рендер факела (картинка)
-                if (item.isImg) {
+                
+                // Рендер анимированных предметов (Видео/Гифка)
+                if (item.isVideo) {
                     return `
                         <div class="gift-card" onclick="openModal('${item.id}')">
                             <div class="gift-image" style="background-image: url('${item.bg}');">
@@ -659,32 +663,14 @@
                                     <div class="badge" style="background:#4ade80; color:black;">☘️</div>
                                     <div class="badge" style="background:#a855f7; color:white;">🛠</div>
                                 </div>
-                                <img src="${item.img}" style="width: 100%; height: 100%; object-fit: cover; position: absolute; z-index: 2;" />
+                                <video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; position: absolute; z-index: 2;">
+                                    <source src="${item.videoSrc}" type="video/webm">
+                                    <source src="${item.videoSrc}" type="video/mp4">
+                                    <source src="${item.videoSrc}" type="image/gif">
+                                </video>
                             </div>
                             <div class="gift-title">${item.name}</div>
-                            <div class="gift-id">#217244</div>
-                            <div class="gift-footer">
-                                <button class="price-btn" onclick="event.stopPropagation(); openModal('${item.id}')">
-                                    ${item.price.toFixed(2)} 💎
-                                </button>
-                                <button class="buy-icon-btn" onclick="event.stopPropagation(); openModal('${item.id}')">🛒</button>
-                            </div>
-                        </div>
-                    `;
-                }
-                // Рендер Lol Pop (гифка)
-                if (item.isGif) {
-                    return `
-                        <div class="gift-card" onclick="openModal('${item.id}')">
-                            <div class="gift-image" style="background-image: url('bg_lolpop.jpg');">
-                                <div class="badge-group">
-                                    <div class="badge" style="background:#4ade80; color:black;">☘️</div>
-                                    <div class="badge" style="background:#a855f7; color:white;">🛠</div>
-                                </div>
-                                <img src="lolpop.gif" style="width: 100%; height: 100%; object-fit: contain; position: absolute; z-index: 2;" />
-                            </div>
-                            <div class="gift-title">${item.name}</div>
-                            <div class="gift-id">#71349</div>
+                            <div class="gift-id">#${item.id === 'g4' ? '217244' : '71349'}</div>
                             <div class="gift-footer">
                                 <button class="price-btn" onclick="event.stopPropagation(); openModal('${item.id}')">
                                     ${item.price.toFixed(2)} 💎
@@ -695,7 +681,7 @@
                     `;
                 }
                 
-                // Обычные предметы
+                // Обычные предметы (эмодзи)
                 return `
                     <div class="gift-card" onclick="openModal('${item.id}')">
                         <div class="gift-image" style="background: linear-gradient(180deg, ${item.color}, #1c1c24);">
@@ -718,22 +704,6 @@
             }).join('');
         }
 
-        function buyGift(id) {
-            const item = storeItems.find(i => i.id === id);
-            if (userBalance >= item.price) {
-                userBalance -= item.price;
-                myGifts.push(item);
-                
-                document.getElementById('balance-val').innerText = userBalance.toFixed(2);
-                tg.HapticFeedback.impactOccurred('medium');
-                
-                renderInventory();
-                tg.showAlert(`Вы купили ${item.name} за ${item.price.toFixed(2)} 💎!`);
-            } else {
-                tg.showAlert("Недостаточно средств! (Это тестовый режим)");
-            }
-        }
-
         function renderInventory() {
             const grid = document.getElementById('my-gifts-grid');
             const empty = document.getElementById('empty-gifts');
@@ -746,10 +716,13 @@
                 empty.style.display = 'none';
                 grid.innerHTML = myGifts.map((item, index) => `
                     <div class="gift-card" onclick="openModal('${item.id}')">
-                        <div class="gift-image" style="background: ${item.isGif ? "url('bg_lolpop.jpg') center/cover" : item.isImg ? "url('${item.bg}') center/cover" : 'linear-gradient(180deg, ' + item.color + ', #1c1c24)'};">
-                            ${item.isGif ? `<img src="lolpop.gif" style="width: 100%; height: 100%; object-fit: contain; position: absolute; z-index: 2;" />` : 
-                              item.isImg ? `<img src="${item.img}" style="width: 100%; height: 100%; object-fit: cover; position: absolute; z-index: 2;" />` : 
-                              `<span style="position: relative; z-index: 2;">${item.icon}</span>`}
+                        <div class="gift-image" style="background: ${item.isVideo ? "url('" + item.bg + "') center/cover" : 'linear-gradient(180deg, ' + item.color + ', #1c1c24)'};">
+                            ${item.isVideo ? 
+                                `<video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; position: absolute; z-index: 2;">
+                                    <source src="${item.videoSrc}">
+                                </video>` : 
+                                `<span style="position: relative; z-index: 2;">${item.icon}</span>`
+                            }
                         </div>
                         <div class="gift-title">${item.name}</div>
                         <div class="gift-id">#${1000 + index}</div>
@@ -778,33 +751,26 @@
 
             const container = document.getElementById('modal-img-container');
             
-            if (item.isGif) {
-                container.style.backgroundImage = "url('bg_lolpop.jpg')";
-                container.innerHTML = `
-                    <img src="lolpop.gif" style="width: 100%; height: 100%; object-fit: contain; position: absolute; z-index: 2;" />
-                    <div class="modal-img-overlay-text">
-                        <h2>${item.name} ></h2>
-                        <p>#71349</p>
-                    </div>
-                    <div style="position: absolute; top: 12px; right: 12px; display: flex; gap: 8px; z-index: 5;">
-                        <div style="background: rgba(0,0,0,0.5); width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center;">👁</div>
-                        <div style="background: rgba(0,0,0,0.5); width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center;">🔗</div>
-                    </div>
-                `;
-            } else if (item.isImg) {
+            // Если предмет анимированный (видео)
+            if (item.isVideo) {
                 container.style.backgroundImage = `url('${item.bg}')`;
                 container.innerHTML = `
-                    <img src="${item.img}" style="width: 100%; height: 100%; object-fit: cover; position: absolute; z-index: 2;" />
+                    <video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; position: absolute; z-index: 2;">
+                        <source src="${item.videoSrc}">
+                    </video>
+                    
                     <div class="modal-img-overlay-text">
                         <h2>${item.name} ></h2>
-                        <p>#217244</p>
+                        <p>#${item.id === 'g4' ? '217244' : '71349'}</p>
                     </div>
+
                     <div style="position: absolute; top: 12px; right: 12px; display: flex; gap: 8px; z-index: 5;">
                         <div style="background: rgba(0,0,0,0.5); width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center;">👁</div>
                         <div style="background: rgba(0,0,0,0.5); width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center;">🔗</div>
                     </div>
                 `;
             } else {
+                // Обычные предметы
                 container.style.backgroundImage = 'none';
                 container.style.background = item.color;
                 container.innerHTML = `
