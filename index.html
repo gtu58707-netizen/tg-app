@@ -14,7 +14,7 @@
             --accent-blue: #2b9fff;
             --accent-purple: #a855f7;
             --accent-green: #22c55e;
-            --nav-bg: rgba(20, 20, 25, 0.95);
+            --nav-bg: rgba(25, 25, 30, 0.65); /* Прозрачность для матового стекла */
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -25,7 +25,7 @@
             color: var(--text-main);
             margin: 0;
             padding: 0;
-            padding-bottom: 80px;
+            padding-bottom: 90px;
             overflow-x: hidden;
             user-select: none;
         }
@@ -72,7 +72,6 @@
             align-items: center;
             background: linear-gradient(135deg, #1e1b4b, #4c1d95);
         }
-        .banner.green { background: linear-gradient(135deg, #065f46, #10b981); }
         .banner.blue { background: linear-gradient(135deg, #1e3a8a, #3b82f6); }
         
         .banner-text h2 { margin: 0 0 4px 0; font-size: 20px; font-style: italic; font-weight: 800; }
@@ -119,7 +118,7 @@
         
         .gift-card {
             background: var(--card-bg);
-            border-radius: 16px;
+            border-radius: 24px; /* Сильно скругленные плашки */
             padding: 12px;
             display: flex;
             flex-direction: column;
@@ -131,7 +130,7 @@
         .gift-image {
             width: 100%;
             aspect-ratio: 1;
-            border-radius: 12px;
+            border-radius: 18px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -241,18 +240,20 @@
         .timer-val { font-size: 20px; font-weight: bold; }
         .timer-label { font-size: 10px; color: var(--text-muted); }
 
-        /* Нижняя навигация */
+        /* Нижняя навигация (Матовое стекло) */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
             background: var(--nav-bg);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             display: flex;
             justify-content: space-around;
-            padding: 12px 0 20px 0;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            align-items: center;
+            padding: 12px 10px 24px 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
             z-index: 100;
         }
         .nav-item {
@@ -279,6 +280,26 @@
             font-weight: bold;
         }
 
+        /* Кнопка профиля в меню */
+        .profile-btn-nav {
+            width: 44px;
+            height: 44px;
+            background-color: var(--accent-blue);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(43, 159, 255, 0.4);
+            background-size: cover;
+            background-position: center;
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+
         /* --- МОДАЛЬНОЕ ОКНО (Детали) --- */
         #gift-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -292,17 +313,45 @@
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .modal-handle { width: 40px; height: 4px; background: #444; border-radius: 2px; margin: 0 auto 16px auto; cursor: pointer; }
         
+        /* Картинка в модалке с текстом поверх */
         .modal-img-area {
             width: 100%; aspect-ratio: 1; border-radius: 24px; margin-bottom: 20px; 
             display: flex; justify-content: center; align-items: center; position: relative; 
             overflow: hidden; background-size: cover; background-position: center;
         }
-        .modal-stat-row { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .modal-img-overlay-text {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 5;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        .modal-img-overlay-text h2 { margin: 0; font-size: 28px; font-weight: 800; }
+        .modal-img-overlay-text p { margin: 0; font-size: 14px; opacity: 0.9; }
+
+        /* Характеристики */
+        .modal-stats { background: var(--card-bg); border-radius: 16px; padding: 0 16px; margin-bottom: 16px; }
+        .modal-stat-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .modal-stat-row:last-child { border-bottom: none; }
         .modal-stat-label { color: var(--text-muted); width: 80px; }
         .modal-stat-value { color: #3b82f6; font-weight: 600; flex: 1; text-align: left; }
-        .modal-stat-price { font-weight: 600; text-align: right; }
-        .modal-rarity { color: var(--text-muted); font-size: 12px; font-weight: normal; }
+        .modal-stat-price { font-weight: 600; text-align: right; color: var(--text-muted); font-size: 14px; }
+        .modal-rarity { color: var(--text-muted); font-size: 12px; font-weight: normal; background: rgba(59, 130, 246, 0.2); padding: 2px 6px; border-radius: 8px; margin-left: 4px;}
+
+        /* Кнопки в модалке */
+        .modal-actions-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;
+        }
+        .modal-action-btn {
+            background: var(--card-bg); color: white; border: none; border-radius: 16px; 
+            padding: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;
+            text-align: left;
+        }
+        .modal-action-btn div { display: flex; flex-direction: column; }
+        .modal-action-btn .title { font-weight: bold; font-size: 14px; }
+        .modal-action-btn .subtitle { font-size: 11px; opacity: 0.8; margin-top: 2px; display: flex; align-items: center; gap: 4px; }
     </style>
 </head>
 <body>
@@ -311,7 +360,7 @@
     <div class="header">
         <div class="header-close" onclick="tg.close()">✕</div>
         <div class="balance-pill">
-            <span class="star">⭐</span> <span id="balance-val">1000.00</span>
+            <span class="star">⭐</span> <span id="balance-val">0</span>
         </div>
     </div>
 
@@ -410,7 +459,18 @@
         </div>
     </div>
 
-    <!-- Нижняя навигация -->
+    <!-- ЭКРАН: Profile -->
+    <div id="screen-profile" class="screen">
+        <h2 style="text-align:center; margin-top:40px;">Профиль</h2>
+        <div style="background:var(--card-bg); border-radius:16px; padding:20px; text-align:center; margin-top:20px;">
+            <div id="profile-avatar-large" style="width:80px; height:80px; background-color:var(--accent-blue); border-radius:50%; margin:0 auto 16px; display:flex; justify-content:center; align-items:center; font-size:32px; font-weight:bold; background-size:cover; background-position:center;">S</div>
+            <h3 id="profile-name" style="margin:0 0 8px 0;">User</h3>
+            <p style="color:var(--text-muted); margin:0;">ID: <span id="profile-id">...</span></p>
+        </div>
+        <button class="action-btn" style="margin-top:24px;" onclick="showScreen('store')">Вернуться в магазин</button>
+    </div>
+
+    <!-- Нижняя навигация (Матовое стекло) -->
     <div class="bottom-nav">
         <div class="nav-item" onclick="showScreen('games')" id="nav-games">
             <div class="nav-icon">🎮</div>
@@ -429,6 +489,8 @@
             <span>Event</span>
             <div class="hot-badge">HOT</div>
         </div>
+        <!-- Кнопка профиля с аватаркой -->
+        <div class="profile-btn-nav" id="profile-avatar-btn" onclick="showScreen('profile')">S</div>
     </div>
 
     <!-- МОДАЛЬНОЕ ОКНО (Детали подарка) -->
@@ -437,40 +499,42 @@
             <div class="modal-handle" onclick="closeModal()"></div>
             
             <div id="modal-img-container" class="modal-img-area">
-                <!-- Заполняется через JS -->
+                <!-- Картинка и текст заполняются через JS -->
             </div>
 
-            <h2 id="modal-title" style="margin: 0 0 4px 0; text-align: center; font-size: 24px;">Chill Flame ></h2>
-            <p id="modal-id" style="text-align: center; color: var(--text-muted); margin-bottom: 24px;">#217244</p>
-
-            <div class="modal-stats" style="background: var(--card-bg); border-radius: 16px; padding: 0 16px; margin-bottom: 24px;">
+            <div class="modal-stats" id="modal-stats-container">
                 <!-- Характеристики заполняются через JS -->
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                 <span style="color: var(--text-muted);">Purchase reward</span>
-                <span style="color: #fbbf24; font-weight: 600;">648 ✦</span>
+                <span style="color: #fbbf24; font-weight: 600;">889 ✦</span>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
-                <button style="background: #7e22ce; color: white; border: none; border-radius: 16px; padding: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
-                    <div style="text-align: left;"><div style="font-weight: bold; font-size: 14px;">Lucky Craft</div><div style="font-size: 11px; opacity: 0.8;">For your gifts</div></div>
+            <div class="modal-actions-grid">
+                <button class="modal-action-btn" style="background: #7e22ce;">
+                    <div><span class="title">Lucky Craft</span><span class="subtitle">For your gifts</span></div>
                     <span style="font-size: 18px;">🛠</span>
                 </button>
-                <button style="background: #16a34a; color: white; border: none; border-radius: 16px; padding: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
-                    <div style="text-align: left;"><div style="font-weight: bold; font-size: 14px;">Lucky Buy</div><div style="font-size: 11px; opacity: 0.8;">For 3.24 GRAM</div></div>
+                <button class="modal-action-btn" style="background: #16a34a;">
+                    <div><span class="title">Lucky Buy</span><span class="subtitle">For 4.45 GRAM</span></div>
                     <span style="font-size: 18px;">☘️</span>
                 </button>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                <button style="background: var(--card-bg); color: white; border: none; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; align-items: center; cursor: pointer;">
-                    <div style="font-weight: bold; font-size: 14px;">Make an offer</div>
-                    <div style="font-size: 12px; color: var(--text-muted);">0.01 GRAM</div>
+            <div class="modal-actions-grid">
+                <button class="modal-action-btn">
+                    <div><span class="title">Make an offer</span><span class="subtitle">0.01 GRAM</span></div>
                 </button>
-                <button id="modal-buy-btn" style="background: var(--accent-blue); color: white; border: none; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; align-items: center; cursor: pointer;">
-                    <div style="font-weight: bold; font-size: 14px;">Buy gift</div>
-                    <div style="font-size: 12px; opacity: 0.8;" id="modal-buy-price">6.48 GRAM</div>
+                
+                <!-- Кнопка оплаты звездами (Тестовая) -->
+                <button id="modal-buy-btn" class="modal-action-btn" style="background: var(--accent-blue);">
+                    <div>
+                        <span class="title">Buy with stars</span>
+                        <span class="subtitle">
+                            300 <tg-emoji emoji-id="5258165702707125574">⭐️</tg-emoji>
+                        </span>
+                    </div>
                 </button>
             </div>
         </div>
@@ -482,8 +546,36 @@
         tg.setHeaderColor('#0f0f13');
         tg.setBackgroundColor('#0f0f13');
 
-        // Глобальное состояние
-        let userBalance = 1000;
+        // --- БАЛАНС И ПОЛЬЗОВАТЕЛЬ ---
+        let userBalance = 0; // 0 по умолчанию
+        let userAvatarLetter = "S";
+        
+        const user = tg.initDataUnsafe?.user;
+        if (user) {
+            // Если зашел админ, даем ему 1000 звезд для теста
+            if (user.id === 811324663) {
+                userBalance = 1000;
+            }
+            
+            if (user.first_name) {
+                userAvatarLetter = user.first_name.charAt(0).toUpperCase();
+            } else if (user.username) {
+                userAvatarLetter = user.username.charAt(0).toUpperCase();
+            }
+            document.getElementById('profile-avatar-btn').innerText = userAvatarLetter;
+            document.getElementById('profile-avatar-large').innerText = userAvatarLetter;
+            document.getElementById('profile-name').innerText = user.first_name || user.username || 'User';
+            document.getElementById('profile-id').innerText = user.id;
+
+            if (user.photo_url) {
+                document.getElementById('profile-avatar-btn').style.backgroundImage = `url('${user.photo_url}')`;
+                document.getElementById('profile-avatar-btn').innerText = "";
+                
+                document.getElementById('profile-avatar-large').style.backgroundImage = `url('${user.photo_url}')`;
+                document.getElementById('profile-avatar-large').innerText = "";
+            }
+        }
+
         let myGifts = [];
 
         // База товаров
@@ -509,53 +601,51 @@
                 backdrop: 'Blue', backdropRarity: '2.5%', backdropPrice: '1.50 GRAM',
                 floorPrice: '4.20 GRAM'
             },
-            // --- ТОТ САМЫЙ CHILL FLAME (С ГИФКОЙ) ---
+            // --- LOL POP С ГИФКОЙ И ФОНОМ ---
             { 
                 id: 'g7', 
-                name: 'Chill Flame', 
-                price: 6.48, 
-                isGif: true, // Указываем, что тут GIF
-                model: 'Balinese',
-                modelRarity: '3%',
-                modelPrice: '4.75 GRAM',
-                symbol: 'Bearskin',
-                symbolRarity: '0.3%',
-                symbolPrice: '4.44 GRAM',
-                backdrop: 'Burgundy',
-                backdropRarity: '1.5%',
-                backdropPrice: '4.3 GRAM',
-                floorPrice: '4.25 GRAM'
+                name: 'Lol Pop', 
+                price: 8.89, 
+                isGif: true,
+                model: 'Pineapple',
+                modelRarity: '1.2%',
+                modelPrice: '',
+                symbol: 'Lion Head',
+                symbolRarity: '0.5%',
+                symbolPrice: '',
+                backdrop: 'Cobalt blue',
+                backdropRarity: '',
+                backdropPrice: '',
+                floorPrice: '5.4 GRAM'
             }
         ];
 
-        // Рендер магазина
         function renderStore() {
             const grid = document.getElementById('store-grid');
             grid.innerHTML = storeItems.map(item => {
                 if (item.isGif) {
                     return `
                         <div class="gift-card" onclick="openModal('${item.id}')">
-                            <!-- Фон (bg.jpg) и Гифка (torch.gif) -->
-                            <div class="gift-image" style="background-image: url('bg.jpg');">
+                            <!-- Имя фона bg_lolpop.jpg -->
+                            <div class="gift-image" style="background-image: url('bg_lolpop.jpg');">
                                 <div class="badge-group">
                                     <div class="badge" style="background:#4ade80; color:black;">☘️</div>
                                     <div class="badge" style="background:#a855f7; color:white;">🛠</div>
                                 </div>
-                                <img src="torch.gif" style="width: 100%; height: 100%; object-fit: contain; position: absolute; z-index: 2;" />
+                                <img src="lolpop.gif" style="width: 100%; height: 100%; object-fit: contain; position: absolute; z-index: 2;" />
                             </div>
                             <div class="gift-title">${item.name}</div>
-                            <div class="gift-id">#217244</div>
+                            <div class="gift-id">#71349</div>
                             <div class="gift-footer">
-                                <button class="price-btn" onclick="event.stopPropagation(); buyGift('${item.id}')">
+                                <button class="price-btn" onclick="event.stopPropagation(); openModal('${item.id}')">
                                     ${item.price.toFixed(2)} 💎
                                 </button>
-                                <button class="buy-icon-btn" onclick="event.stopPropagation(); buyGift('${item.id}')">🛒</button>
+                                <button class="buy-icon-btn" onclick="event.stopPropagation(); openModal('${item.id}')">🛒</button>
                             </div>
                         </div>
                     `;
                 }
                 
-                // Обычные предметы
                 return `
                     <div class="gift-card" onclick="openModal('${item.id}')">
                         <div class="gift-image" style="background: linear-gradient(180deg, ${item.color}, #1c1c24);">
@@ -568,17 +658,16 @@
                         <div class="gift-title">${item.name}</div>
                         <div class="gift-id">#${Math.floor(Math.random() * 90000) + 10000}</div>
                         <div class="gift-footer">
-                            <button class="price-btn" onclick="event.stopPropagation(); buyGift('${item.id}')">
+                            <button class="price-btn" onclick="event.stopPropagation(); openModal('${item.id}')">
                                 ${item.price.toFixed(2)} 💎
                             </button>
-                            <button class="buy-icon-btn" onclick="event.stopPropagation(); buyGift('${item.id}')">🛒</button>
+                            <button class="buy-icon-btn" onclick="event.stopPropagation(); openModal('${item.id}')">🛒</button>
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
-        // Логика покупки
         function buyGift(id) {
             const item = storeItems.find(i => i.id === id);
             if (userBalance >= item.price) {
@@ -595,7 +684,6 @@
             }
         }
 
-        // Рендер инвентаря
         function renderInventory() {
             const grid = document.getElementById('my-gifts-grid');
             const empty = document.getElementById('empty-gifts');
@@ -608,8 +696,8 @@
                 empty.style.display = 'none';
                 grid.innerHTML = myGifts.map((item, index) => `
                     <div class="gift-card" onclick="openModal('${item.id}')">
-                        <div class="gift-image" style="background: ${item.isGif ? "url('bg.jpg') center/cover" : 'linear-gradient(180deg, ' + item.color + ', #1c1c24)'};">
-                            ${item.isGif ? `<img src="torch.gif" style="width: 100%; height: 100%; object-fit: contain; position: absolute; z-index: 2;" />` : `<span style="position: relative; z-index: 2;">${item.icon}</span>`}
+                        <div class="gift-image" style="background: ${item.isGif ? "url('bg_lolpop.jpg') center/cover" : 'linear-gradient(180deg, ' + item.color + ', #1c1c24)'};">
+                            ${item.isGif ? `<img src="lolpop.gif" style="width: 100%; height: 100%; object-fit: contain; position: absolute; z-index: 2;" />` : `<span style="position: relative; z-index: 2;">${item.icon}</span>`}
                         </div>
                         <div class="gift-title">${item.name}</div>
                         <div class="gift-id">#${1000 + index}</div>
@@ -621,7 +709,6 @@
             }
         }
 
-        // Навигация
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
             document.getElementById(`screen-${screenId}`).classList.add('active');
@@ -631,34 +718,37 @@
             if (nav) nav.classList.add('active');
         }
 
-        // --- ЛОГИКА МОДАЛЬНОГО ОКНА ---
         const modal = document.getElementById('gift-modal');
 
         function openModal(itemId) {
             const item = storeItems.find(i => i.id === itemId);
             if (!item) return;
 
-            // Заполняем шапку
-            document.getElementById('modal-title').innerText = item.name + ' >';
-            document.getElementById('modal-id').innerText = item.id === 'g7' ? '#217244' : '#' + (Math.floor(Math.random() * 90000) + 10000);
-            
             const container = document.getElementById('modal-img-container');
             
             if (item.isGif) {
-                // Если это Chill Flame (GIF)
-                container.style.backgroundImage = "url('bg.jpg')";
+                container.style.backgroundImage = "url('bg_lolpop.jpg')";
                 container.innerHTML = `
-                    <img src="torch.gif" style="width: 100%; height: 100%; object-fit: contain; position: absolute; z-index: 2;" />
+                    <img src="lolpop.gif" style="width: 100%; height: 100%; object-fit: contain; position: absolute; z-index: 2;" />
+                    
+                    <div class="modal-img-overlay-text">
+                        <h2>${item.name} ></h2>
+                        <p>#71349</p>
+                    </div>
+
                     <div style="position: absolute; top: 12px; right: 12px; display: flex; gap: 8px; z-index: 5;">
                         <div style="background: rgba(0,0,0,0.5); width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center;">👁</div>
                         <div style="background: rgba(0,0,0,0.5); width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center;">🔗</div>
                     </div>
                 `;
             } else {
-                // Для остальных предметов (эмодзи)
                 container.style.backgroundImage = 'none';
                 container.style.background = item.color;
                 container.innerHTML = `
+                    <div class="modal-img-overlay-text">
+                        <h2>${item.name} ></h2>
+                        <p>#${Math.floor(Math.random() * 90000) + 10000}</p>
+                    </div>
                     <div style="position: absolute; top: 12px; right: 12px; display: flex; gap: 8px; z-index: 5;">
                         <div style="background: rgba(0,0,0,0.5); width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center;">👁</div>
                         <div style="background: rgba(0,0,0,0.5); width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center;">🔗</div>
@@ -667,42 +757,36 @@
                 `;
             }
 
-            // Заполняем характеристики
-            const statsContainer = document.querySelector('.modal-stats');
-            if (item.model) {
-                statsContainer.innerHTML = `
-                    <div class="modal-stat-row">
-                        <span class="modal-stat-label">Model</span>
-                        <span class="modal-stat-value">${item.model} <span class="modal-rarity">${item.modelRarity}</span></span>
-                        <span class="modal-stat-price">${item.modelPrice}</span>
-                    </div>
-                    <div class="modal-stat-row">
-                        <span class="modal-stat-label">Symbol</span>
-                        <span class="modal-stat-value">${item.symbol} <span class="modal-rarity">${item.symbolRarity}</span></span>
-                        <span class="modal-stat-price">${item.symbolPrice}</span>
-                    </div>
-                    <div class="modal-stat-row">
-                        <span class="modal-stat-label">Backdrop</span>
-                        <span class="modal-stat-value">${item.backdrop} <span class="modal-rarity">${item.backdropRarity}</span></span>
-                        <span class="modal-stat-price">${item.backdropPrice}</span>
-                    </div>
-                    <div class="modal-stat-row">
-                        <span class="modal-stat-label">Floor Price</span>
-                        <span class="modal-stat-value"></span>
-                        <span class="modal-stat-price">${item.floorPrice}</span>
-                    </div>
-                `;
-            }
+            const statsContainer = document.getElementById('modal-stats-container');
+            statsContainer.innerHTML = `
+                <div class="modal-stat-row">
+                    <span class="modal-stat-label">Model</span>
+                    <span class="modal-stat-value">${item.model} <span class="modal-rarity">${item.modelRarity}</span></span>
+                    <span class="modal-stat-price">${item.modelPrice}</span>
+                </div>
+                <div class="modal-stat-row">
+                    <span class="modal-stat-label">Symbol</span>
+                    <span class="modal-stat-value">${item.symbol} <span class="modal-rarity">${item.symbolRarity}</span></span>
+                    <span class="modal-stat-price">${item.symbolPrice}</span>
+                </div>
+                <div class="modal-stat-row">
+                    <span class="modal-stat-label">Backdrop</span>
+                    <span class="modal-stat-value">${item.backdrop} <span class="modal-rarity">${item.backdropRarity}</span></span>
+                    <span class="modal-stat-price">${item.backdropPrice}</span>
+                </div>
+                <div class="modal-stat-row">
+                    <span class="modal-stat-label">Floor Price</span>
+                    <span class="modal-stat-value"></span>
+                    <span class="modal-stat-price">${item.floorPrice}</span>
+                </div>
+            `;
 
-            // Кнопка покупки
-            document.getElementById('modal-buy-price').innerText = item.price.toFixed(2) + ' GRAM';
+            // Кнопка оплаты звездами (тестовая заглушка)
             const buyBtn = document.getElementById('modal-buy-btn');
             buyBtn.onclick = function() {
-                buyGift(item.id);
-                closeModal();
+                tg.showAlert("Оплата Stars временно недоступна. Скоро!");
             };
 
-            // Показ окна
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
@@ -712,19 +796,16 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Закрытие по клику на фон
         modal.addEventListener('click', function(e) {
             if (e.target === modal) {
                 closeModal();
             }
         });
 
-        // Инициализация при запуске
         renderStore();
         renderInventory();
         document.getElementById('balance-val').innerText = userBalance.toFixed(2);
 
-        // Кнопка "Назад" в Telegram
         tg.BackButton.onClick(() => {
             if (modal.style.display === 'flex') {
                 closeModal();
