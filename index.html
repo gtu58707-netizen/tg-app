@@ -613,8 +613,9 @@
                 id: 'g4', 
                 name: 'Chill Flame', 
                 price: 6.48, 
-                isVideo: true,
-                videoSrc: 'chill.gif', // Имя твоего файла гифки
+                isMedia: true,
+                mediaSrc: 'torch.gif', // Имя файла гифки факела
+                mediaType: 'gif',      // Указываем, что это гифка
                 bg: 'bg.jpg',
                 model: 'Balinese',
                 modelRarity: '3%',
@@ -632,8 +633,9 @@
                 id: 'g7', 
                 name: 'Lol Pop', 
                 price: 8.89, 
-                isVideo: true,
-                videoSrc: 'lolpop.gif', // Имя твоего файла гифки
+                isMedia: true,
+                mediaSrc: 'lolpop.gif', // Имя файла гифки Lol Pop
+                mediaType: 'gif',
                 bg: 'bg_lolpop.jpg',
                 model: 'Pineapple',
                 modelRarity: '1.2%',
@@ -648,12 +650,27 @@
             }
         ];
 
+        // Функция для создания тега медиа (видео или гифки)
+        function getMediaTag(item, isModal = false) {
+            if (!item.isMedia) return '';
+            
+            const styles = isModal 
+                ? "width: 100%; height: 100%; object-fit: cover; position: absolute; z-index: 2;"
+                : "width: 100%; height: 100%; object-fit: cover; position: absolute; z-index: 2;";
+
+            if (item.mediaType === 'gif') {
+                return `<img src="${item.mediaSrc}" style="${styles}" />`;
+            } else {
+                return `<video autoplay loop muted playsinline style="${styles}"><source src="${item.mediaSrc}"></video>`;
+            }
+        }
+
         function renderStore() {
             const grid = document.getElementById('store-grid');
             grid.innerHTML = storeItems.map(item => {
                 
                 // Рендер анимированных предметов (Видео/Гифка)
-                if (item.isVideo) {
+                if (item.isMedia) {
                     return `
                         <div class="gift-card" onclick="openModal('${item.id}')">
                             <div class="gift-image" style="background-image: url('${item.bg}');">
@@ -661,11 +678,7 @@
                                     <div class="badge" style="background:#4ade80; color:black;">☘️</div>
                                     <div class="badge" style="background:#a855f7; color:white;">🛠</div>
                                 </div>
-                                <video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; position: absolute; z-index: 2;">
-                                    <source src="${item.videoSrc}" type="video/webm">
-                                    <source src="${item.videoSrc}" type="video/mp4">
-                                    <source src="${item.videoSrc}" type="image/gif">
-                                </video>
+                                ${getMediaTag(item)}
                             </div>
                             <div class="gift-title">${item.name}</div>
                             <div class="gift-id">#${item.id === 'g4' ? '217244' : '71349'}</div>
@@ -714,11 +727,9 @@
                 empty.style.display = 'none';
                 grid.innerHTML = myGifts.map((item, index) => `
                     <div class="gift-card" onclick="openModal('${item.id}')">
-                        <div class="gift-image" style="background: ${item.isVideo ? "url('" + item.bg + "') center/cover" : 'linear-gradient(180deg, ' + item.color + ', #1c1c24)'};">
-                            ${item.isVideo ? 
-                                `<video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; position: absolute; z-index: 2;">
-                                    <source src="${item.videoSrc}">
-                                </video>` : 
+                        <div class="gift-image" style="background: ${item.isMedia ? "url('" + item.bg + "') center/cover" : 'linear-gradient(180deg, ' + item.color + ', #1c1c24)'};">
+                            ${item.isMedia ? 
+                                getMediaTag(item) : 
                                 `<span style="position: relative; z-index: 2;">${item.icon}</span>`
                             }
                         </div>
@@ -750,12 +761,10 @@
             const container = document.getElementById('modal-img-container');
             
             // Если предмет анимированный (видео)
-            if (item.isVideo) {
+            if (item.isMedia) {
                 container.style.backgroundImage = `url('${item.bg}')`;
                 container.innerHTML = `
-                    <video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; position: absolute; z-index: 2;">
-                        <source src="${item.videoSrc}">
-                    </video>
+                    ${getMediaTag(item, true)}
                     
                     <div class="modal-img-overlay-text">
                         <h2>${item.name} ></h2>
