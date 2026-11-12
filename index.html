@@ -521,13 +521,12 @@
                 backdrop: 'Brown', backdropRarity: '2.0%', backdropPrice: '1.00 GRAM',
                 floorPrice: '3.50 GRAM'
             },
-            // --- ТОТ САМЫЙ CHILL FLAME С ТВОЕЙ КАРТИНКОЙ ---
+            // --- ТОТ САМЫЙ CHILL FLAME С КАРТИНКОЙ ---
             { 
                 id: 'g7', 
                 name: 'Chill Flame', 
                 price: 6.48, 
-                // Картинка упакована в Base64, ничего скачивать не нужно
-                image: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAC0ALQDASIAAhEBAxEB/8QAGwABAAMBAQEBAAAAAAAAAAAAAAQFBgMCAQf/xAA+EAABAwMCAwUFBQYGAwAAAAABAAIDBAUREiExQVEGEyJhcRQygZGhI0KxwdEVJDNScuEHFiVTYoLw/8QAGQEBAAMBAQAAAAAAAAAAAAAAAAIDBAEF/8QAKREAAgIBAwMEAgIDAQAAAAAAAAECAxEEEiExQVETImFxMoEFoRQjkf/aAAwDAQACEQMRAD8A3iIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiA//Z',
+                image: 'chill.jpg', // Ссылка на файл в той же папке
                 isSpecial: true,
                 model: 'Balinese',
                 modelRarity: '3%',
@@ -554,7 +553,6 @@
                                     <div class="badge" style="background:#4ade80; color:black;">☘️</div>
                                     <div class="badge" style="background:#a855f7; color:white;">🛠</div>
                                 </div>
-                                <!-- Здесь выводится картинка -->
                                 <img src="${item.image}" style="width: 100%; height: 100%; object-fit: cover;" />
                             </div>
                             <div class="gift-title">${item.name}</div>
@@ -668,7 +666,7 @@
                 `;
                 container.style.background = 'transparent';
             } else {
-                // Старая логика для остальных предметов
+                // Логика для остальных предметов (эмодзи)
                 container.innerHTML = `
                     <div style="position: absolute; top: 12px; right: 12px; display: flex; gap: 8px; z-index: 5;">
                         <div style="background: rgba(0,0,0,0.5); width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center;">👁</div>
