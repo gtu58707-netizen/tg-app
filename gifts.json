@@ -1,1 +1,20 @@
-[]
+[
+    {
+        "id": "g1794511045",
+        "name": "Ice Cream",
+        "price": 450.0,
+        "mediaSrc": "icecream.gif",
+        "bg": "bg_icecream.jpg",
+        "nft_id": "78235",
+        "model": "Citrus",
+        "modelRarity": "1.5%",
+        "modelPrice": "",
+        "symbol": "Spider",
+        "symbolRarity": "0.7%",
+        "symbolPrice": "",
+        "backdrop": "Gunmetal",
+        "backdropRarity": "1%",
+        "backdropPrice": "",
+        "floorPrice": ""
+    }
+]
